@@ -15,7 +15,7 @@
             "name": "Launch AgRunner",
             "request": "launch",
             "mainClass": "AgRunner",
-            "projectName": "Functions BenchMarck_b4bd6c31",
+            "projectName": "Genetic Algorithm Gaussian_b17074e9",
             "console": "internalConsole"
         }
     ]
