@@ -1,11 +1,3 @@
-# Algoritmo Genético
-
-## Implementação N-Rainhas
-
-Implementado em Java o algoritmo genético aplicado ao caso das N-Rainhas.
-
-Disciplina: Inteligência Artificial
-
 ## Algortimo Genético
 
 ![Diagrama Algoritmo Genético](https://icaroagostino.github.io/post/sbo/ga.png)
