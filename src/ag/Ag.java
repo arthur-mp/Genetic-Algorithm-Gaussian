@@ -92,7 +92,8 @@ public class Ag {
             aux += popJoin.get(i).getEvaluation() + shift;
         }
 
-        i--;
+        if (i != 0)
+            i--;
 
         return i;
     }
