@@ -10,47 +10,46 @@ import individual.Individual;
 public class IndividualPerm extends Individual {
 
     protected List<Double> dimensions;
+    protected int minDomain;
+    protected int maxDomain;
 
     protected IndividualPerm(int dimension) {
         this.dimensions = new ArrayList<>();
-
-        List<Double> dimensionRandom = new ArrayList<>();
+        this.minDomain = -dimension;
+        this.maxDomain = dimension;
 
         Random random = new Random();
 
-        for (double i = 0; i <= (dimension + dimension); i++) {
-            dimensionRandom.add(i);
-        }
-
         for (double i = 0; i < (dimension); i++) {
-            int index = random.nextInt(dimensionRandom.size());
-            double value = (dimensionRandom.get(index) - dimension);
-
-            if (value < (dimension * -1))
-                value = (dimension * -1);
-            else if (value > dimension)
-                value = dimension;
+            double value = random.nextDouble(this.maxDomain * 2) + this.minDomain;
 
             this.dimensions.add(value);
-            dimensionRandom.remove(index);
         }
     }
 
     protected IndividualPerm(List<Double> dimension) {
         this.dimensions = dimension;
+        this.minDomain = -dimension.size();
+        this.maxDomain = dimension.size();
     }
 
     @Override
     public Double evaluate() {
         Double evaluation = 0.0;
-        int beta = 10; // default value
+        int beta = 10; // default value optitional
         Double calculation = 0.0;
 
-        for (int i = 1; i < this.dimensions.size(); i++) {
-            for (int j = 1; j < this.dimensions.size(); j++) {
-                calculation = ((j + beta) *
-                        (Math.pow(this.dimensions.get(j), i) - (1 / (Math.pow(j, i)))));
+        for (int i = 1; i <= this.dimensions.size(); i++) {
+
+            calculation = 0.0;
+
+            for (int j = 1; j <= this.dimensions.size(); j++) {
+
+                calculation += ((j + beta) *
+                        (Math.pow(this.dimensions.get(j - 1), i) - (1 / (Math.pow(j, i)))));
+
             }
+
             calculation = Math.pow(calculation, 2);
             evaluation += calculation;
         }
@@ -81,10 +80,10 @@ public class IndividualPerm extends Individual {
             value = this.dimensions.get(i)
                     + (alpha * Math.abs(this.dimensions.get(i) - individualPerm.dimensions.get(i)));
 
-            if (value < (dimensions.size() * -1))
-                value = (dimensions.size() * -1);
-            else if (value > dimensions.size())
-                value = dimensions.size();
+            if (value < this.minDomain)
+                value = (this.minDomain);
+            else if (value > this.maxDomain)
+                value = this.maxDomain;
 
             dimensionChildren1.add(value);
 
@@ -93,10 +92,10 @@ public class IndividualPerm extends Individual {
             value = individualPerm.dimensions.get(i)
                     + (alpha * Math.abs(this.dimensions.get(i) - individualPerm.dimensions.get(i)));
 
-            if (value < (dimensions.size() * -1))
-                value = (dimensions.size() * -1);
-            else if (value > dimensions.size())
-                value = dimensions.size();
+            if (value < this.minDomain)
+                value = (this.minDomain);
+            else if (value > this.maxDomain)
+                value = this.maxDomain;
 
             dimensionChildren2.add(value);
         }
@@ -128,10 +127,10 @@ public class IndividualPerm extends Individual {
             mutate = random.nextGaussian(0, sigma);
 
             if (mutate <= 0.1) {
-                if ((cloneGenesParents.get(i) + mutate) < (dimensions.size() * -1))
-                    mutate = (dimensions.size() * -1);
-                else if ((cloneGenesParents.get(i) + mutate) > dimensions.size())
-                    mutate = dimensions.size();
+                if ((cloneGenesParents.get(i) + mutate) < this.minDomain)
+                    mutate = this.minDomain;
+                else if ((cloneGenesParents.get(i) + mutate) > this.maxDomain)
+                    mutate = this.maxDomain;
 
                 cloneGenesParents.set(i, (mutate));
                 mutanted = true;
@@ -141,6 +140,11 @@ public class IndividualPerm extends Individual {
         if (!mutanted) {
             int positionRandom = random.nextInt(0, cloneGenesParents.size());
             mutate = random.nextGaussian(0, sigma);
+
+            if ((mutate) < this.minDomain)
+                mutate = this.minDomain;
+            else if ((mutate) > this.maxDomain)
+                mutate = this.maxDomain;
 
             cloneGenesParents.set(positionRandom, (cloneGenesParents.get(positionRandom) + mutate));
 
