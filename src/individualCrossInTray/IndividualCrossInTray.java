@@ -10,29 +10,18 @@ import individual.Individual;
 public class IndividualCrossInTray extends Individual {
 
     protected List<Double> dimensions;
+    protected int minDomain = -10;
+    protected int maxDomain = 10;
 
     protected IndividualCrossInTray(int dimension) {
         this.dimensions = new ArrayList<>();
 
-        List<Double> dimensionRandom = new ArrayList<>();
-
         Random random = new Random();
 
-        for (double i = 0; i <= (dimension + dimension); i++) {
-            dimensionRandom.add(i);
-        }
-
         for (double i = 0; i < (dimension); i++) {
-            int index = random.nextInt(dimensionRandom.size());
-            double value = (dimensionRandom.get(index) - dimension);
-
-            if (value < (dimension * -1))
-                value = (dimension * -1);
-            else if (value > dimension)
-                value = dimension;
+            double value = random.nextDouble(this.maxDomain * 2) + this.minDomain;
 
             this.dimensions.add(value);
-            dimensionRandom.remove(index);
         }
     }
 
@@ -43,14 +32,12 @@ public class IndividualCrossInTray extends Individual {
     @Override
     public Double evaluate() {
         Double evaluation = 0.0;
-        Double a = 0.0;
 
-        a = Math.abs(Math.sin(this.dimensions.get(0)) * Math.sin(this.dimensions.get(1)) *
-                Math.exp(Math.abs((100)
-                        - ((Math.sqrt((Math.pow(this.dimensions.get(0), 2)) + Math.pow(this.dimensions.get(1), 2)))))))
-                + 1;
-
-        evaluation = -0.0001 * Math.pow(a, 0.1);
+        double fact1 = (Math.sin(this.dimensions.get(0)) * Math.sin(this.dimensions.get(1)));
+        double fact2 = Math.exp(Math.abs(100
+                - ((Math.sqrt(Math.pow(this.dimensions.get(0), 2) + Math.pow(this.dimensions.get(1), 2))) / Math.PI)));
+        double fact3 = Math.abs(fact1 * fact2) + 1;
+        evaluation = -0.0001 * Math.pow(fact3, 0.1);
 
         return evaluation;
     }
@@ -78,10 +65,10 @@ public class IndividualCrossInTray extends Individual {
             value = this.dimensions.get(i)
                     + (alpha * Math.abs(this.dimensions.get(i) - individualPerm.dimensions.get(i)));
 
-            if (value < (dimensions.size() * -1))
-                value = (dimensions.size() * -1);
-            else if (value > dimensions.size())
-                value = dimensions.size();
+            if (value < this.minDomain)
+                value = (this.minDomain);
+            else if (value > this.maxDomain)
+                value = this.maxDomain;
 
             dimensionChildren1.add(value);
 
@@ -90,10 +77,10 @@ public class IndividualCrossInTray extends Individual {
             value = individualPerm.dimensions.get(i)
                     + (alpha * Math.abs(this.dimensions.get(i) - individualPerm.dimensions.get(i)));
 
-            if (value < (dimensions.size() * -1))
-                value = (dimensions.size() * -1);
-            else if (value > dimensions.size())
-                value = dimensions.size();
+            if (value < this.minDomain)
+                value = (this.minDomain);
+            else if (value > this.maxDomain)
+                value = this.maxDomain;
 
             dimensionChildren2.add(value);
         }
@@ -125,10 +112,10 @@ public class IndividualCrossInTray extends Individual {
             mutate = random.nextGaussian(0, sigma);
 
             if (mutate <= 0.1) {
-                if ((cloneGenesParents.get(i) + mutate) < (dimensions.size() * -1))
-                    mutate = (dimensions.size() * -1);
-                else if ((cloneGenesParents.get(i) + mutate) > dimensions.size())
-                    mutate = dimensions.size();
+                if ((cloneGenesParents.get(i) + mutate) < this.minDomain)
+                    mutate = this.minDomain;
+                else if ((cloneGenesParents.get(i) + mutate) > this.maxDomain)
+                    mutate = this.maxDomain;
 
                 cloneGenesParents.set(i, (mutate));
                 mutanted = true;
@@ -138,6 +125,11 @@ public class IndividualCrossInTray extends Individual {
         if (!mutanted) {
             int positionRandom = random.nextInt(0, cloneGenesParents.size());
             mutate = random.nextGaussian(0, sigma);
+
+            if ((mutate) < this.minDomain)
+                mutate = this.minDomain;
+            else if ((mutate) > this.maxDomain)
+                mutate = this.maxDomain;
 
             cloneGenesParents.set(positionRandom, (cloneGenesParents.get(positionRandom) + mutate));
 
