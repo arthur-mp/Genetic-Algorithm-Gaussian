@@ -34,16 +34,14 @@ public class AgRunner {
          *
          */
 
-        /*
-         * shift = -2.1;
-         * 
-         * IndividualFactory individualFactory = new
-         * IndividualCrossInTrayFactory(dimension);
-         * 
-         * Ag ag = new Ag();
-         * 
-         * Individual individual = ag.run(nPop, individualFactory, nElite, nGer, shift);
-         */
+        // shift = -2.1;
+
+        // IndividualFactory individualFactory = new
+        // IndividualCrossInTrayFactory(dimension);
+
+        // Ag ag = new Ag();
+
+        // Individual individual = ag.run(nPop, individualFactory, nElite, nGer, shift);
 
         /*
          *
@@ -51,16 +49,14 @@ public class AgRunner {
          *
          */
 
-        /*
-         * shift = 0.0;
-         * 
-         * IndividualFactory individualFactory = new
-         * IndividualSchwefelFactory(dimension);
-         * 
-         * Ag ag = new Ag();
-         * 
-         * Individual individual = ag.run(nPop, individualFactory, nElite, nGer, shift);
-         */
+        // shift = 0.0;
+
+        // IndividualFactory individualFactory = new
+        // IndividualSchwefelFactory(dimension);
+
+        // Ag ag = new Ag();
+
+        // Individual individual = ag.run(nPop, individualFactory, nElite, nGer, shift);
 
     }
 

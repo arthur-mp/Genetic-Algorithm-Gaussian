@@ -115,8 +115,8 @@ public class IndividualPerm extends Individual {
     @Override
     public Individual getMutant() {
         Random random = new Random();
-        double sigma = 0.1;
         double mutate;
+        double r;
         boolean mutanted = false;
 
         Individual mutant;
@@ -124,7 +124,7 @@ public class IndividualPerm extends Individual {
         List<Double> cloneGenesParents = new ArrayList<>(this.dimensions);
 
         for (int i = 0; i < cloneGenesParents.size(); i++) {
-            mutate = random.nextGaussian(0, sigma);
+            mutate = random.nextDouble();
 
             if (mutate <= 0.1) {
                 if ((cloneGenesParents.get(i) + mutate) < this.minDomain)
@@ -132,21 +132,17 @@ public class IndividualPerm extends Individual {
                 else if ((cloneGenesParents.get(i) + mutate) > this.maxDomain)
                     mutate = this.maxDomain;
 
-                cloneGenesParents.set(i, (mutate));
+                r = random.nextGaussian();
+                cloneGenesParents.set(i, (cloneGenesParents.get(i) + r));
                 mutanted = true;
             }
         }
 
         if (!mutanted) {
             int positionRandom = random.nextInt(0, cloneGenesParents.size());
-            mutate = random.nextGaussian(0, sigma);
+            r = random.nextGaussian();
 
-            if ((mutate) < this.minDomain)
-                mutate = this.minDomain;
-            else if ((mutate) > this.maxDomain)
-                mutate = this.maxDomain;
-
-            cloneGenesParents.set(positionRandom, (cloneGenesParents.get(positionRandom) + mutate));
+            cloneGenesParents.set(positionRandom, (cloneGenesParents.get(positionRandom) + r));
 
         }
 

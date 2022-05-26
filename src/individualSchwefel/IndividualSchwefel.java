@@ -10,11 +10,13 @@ import individual.Individual;
 public class IndividualSchwefel extends Individual {
 
     protected List<Double> dimensions;
-    protected int minDomain = -500;
-    protected int maxDomain = 500;
+    protected int minDomain;
+    protected int maxDomain;
 
     protected IndividualSchwefel(int dimension) {
         this.dimensions = new ArrayList<>();
+        this.minDomain = -500;
+        this.maxDomain = 500;
 
         Random random = new Random();
 
@@ -101,8 +103,8 @@ public class IndividualSchwefel extends Individual {
     @Override
     public Individual getMutant() {
         Random random = new Random();
-        double sigma = 0.1;
         double mutate;
+        double r;
         boolean mutanted = false;
 
         Individual mutant;
@@ -110,7 +112,7 @@ public class IndividualSchwefel extends Individual {
         List<Double> cloneGenesParents = new ArrayList<>(this.dimensions);
 
         for (int i = 0; i < cloneGenesParents.size(); i++) {
-            mutate = random.nextGaussian(0, sigma);
+            mutate = random.nextDouble();
 
             if (mutate <= 0.1) {
                 if ((cloneGenesParents.get(i) + mutate) < this.minDomain)
@@ -118,21 +120,17 @@ public class IndividualSchwefel extends Individual {
                 else if ((cloneGenesParents.get(i) + mutate) > this.maxDomain)
                     mutate = this.maxDomain;
 
-                cloneGenesParents.set(i, (mutate));
+                r = random.nextGaussian();
+                cloneGenesParents.set(i, (cloneGenesParents.get(i) + r));
                 mutanted = true;
             }
         }
 
         if (!mutanted) {
             int positionRandom = random.nextInt(0, cloneGenesParents.size());
-            mutate = random.nextGaussian(0, sigma);
+            r = random.nextGaussian();
 
-            if ((mutate) < this.minDomain)
-                mutate = this.minDomain;
-            else if ((mutate) > this.maxDomain)
-                mutate = this.maxDomain;
-
-            cloneGenesParents.set(positionRandom, (cloneGenesParents.get(positionRandom) + mutate));
+            cloneGenesParents.set(positionRandom, (cloneGenesParents.get(positionRandom) + r));
 
         }
 
